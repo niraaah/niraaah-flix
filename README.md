@@ -1,166 +1,182 @@
-## 프로젝트 이름: 영화 검색 및 관리 플랫폼
+### README.md
 
-### 개요
-이 프로젝트는 개인 TMDB API를 활용하여 영화 정보를 검색하고 관리할 수 있는 웹 애플리케이션입니다. 사용자는 영화 검색, 장르 필터링, 무한 스크롤링, 회원가입 및 로그인 기능을 통해 서비스를 이용할 수 있습니다.
 
----
+# 영화 검색 및 관리 웹 애플리케이션
 
-### 주요 기능
-
-1. **홈 화면**:
-   - 랜덤 인기 영화 배너
-   - 인기 영화, 최신 영화, 장르별 영화 리스트
-   - 무한 스크롤링 기능 지원
-
-2. **영화 검색**:
-   - 키워드, 장르, 평점, 언어, 개봉연도를 기준으로 영화 검색 가능
-   - 검색 조건 변경 시 기존 검색 결과 초기화 및 새 검색 결과 반영
-   - 검색 결과 무한 스크롤링 지원
-   - 검색 결과 클릭 시 영화 상세정보를 모달로 제공
-
-3. **로그인 및 회원가입**:
-   - 회원가입 시 개인 TMDB API 키 등록
-   - Local Storage를 이용한 사용자 정보 저장
-   - 로그인 상태 유지 및 자동 로그인 기능
-   - 약관 동의 및 커스텀 Toast 메시지 표시
-
-4. **UI/UX 기능**:
-   - 카드 슬라이딩 애니메이션 효과
-   - 메인 페이지로 이동하는 "맨 위로" 버튼
-   - 모바일 및 데스크톱 환경에서의 반응형 디자인
+본 프로젝트는 TMDB API를 활용하여 영화 검색, 관리, 시청 기록 등을 제공하는 웹 애플리케이션입니다. 사용자는 개인 TMDB API 키를 통해 영화 데이터를 검색하고, 찜 목록 관리 및 무한 스크롤링을 활용한 효율적인 탐색을 경험할 수 있습니다.
 
 ---
 
-### 사용 기술
+## 📚 프로젝트 기본 정보
 
-- **프론트엔드**: React, React Router
-- **스타일링**: CSS, Custom Animations
-- **데이터 관리**: Local Storage, Fetch API
-- **API**: TMDB API
-- **기타**: React Markdown (약관 표시), Toast 라이브러리
-
----
-
-### 설치 및 실행 방법
-
-1. **설치**:
-   - 프로젝트를 클론합니다:
-     ```bash
-     git clone [repository_url]
-     cd [project_folder]
-     ```
-   - 패키지를 설치합니다:
-     ```bash
-     npm install
-     ```
-
-2. **환경 변수 설정**:
-   - 프로젝트 루트 디렉토리에 `.env` 파일을 생성하고 다음 내용을 추가합니다:
-     ```
-     REACT_APP_TMDB_API_KEY=당신의_TMDB_API_키
-     ```
-
-3. **실행**:
-   ```bash
-   npm start
-   ```
-   - 브라우저에서 `http://localhost:3000`을 열어 서비스를 확인합니다.
+- **프로젝트 이름**: 영화 검색 및 관리 웹 애플리케이션
+- **주요 기능**:
+  - 영화 검색 (키워드, 장르, 언어, 평점, 개봉년도 등)
+  - 로그인 및 회원가입 기능
+  - 영화 찜하기 및 관리
+  - 모달을 통한 상세 영화 정보 제공
+  - 무한 스크롤링 및 반응형 UI
+- **배포 상태**: 개발 중
+- **사용 API**: [TMDB API](https://www.themoviedb.org/documentation/api)
 
 ---
 
-### 폴더 구조
+## 🛠️ 기술 스택 명시
 
+- **프론트엔드**: React, React Router DOM
+- **스타일링**: CSS, Custom Animation, CSS Grid, Flexbox
+- **백엔드 (API 사용)**: TMDB API
+- **상태 관리**: React State
+- **스토리지**: Local Storage
+- **추가 라이브러리**:
+  - `react-markdown`: 약관 내용 렌더링
+  - `react-toastify`: 사용자 알림 (Toast) 처리
+
+---
+
+## 🔧 설치 및 실행 가이드
+
+### 1️⃣ 프로젝트 클론
+```bash
+git clone <프로젝트 URL>
+cd <프로젝트 폴더>
 ```
-src/
-├── components/       # 재사용 가능한 컴포넌트
+
+### 2️⃣ 패키지 설치
+
+```bash
+npm install
+```
+
+### 3️⃣ 환경 변수 설정
+
+`.env` 파일을 생성한 후, TMDB API 키를 추가합니다.
+```env
+REACT_APP_TMDB_API_KEY=당신의_TMDB_API_키
+```
+
+### 4️⃣ 프로젝트 실행
+```bash
+npm start
+```
+앱은 기본적으로 `http://localhost:3000`에서 실행됩니다.
+
+---
+
+## 🗂️ 프로젝트 구조 설명
+
+```csharp
+📦 src
+├── 📂 assets              # 이미지 및 정적 파일
+│   ├── images/            # 이미지 파일
+├── 📂 components          # 재사용 가능한 컴포넌트
+│   ├── Footer.jsx
+│   ├── Header.jsx
 │   ├── MovieCard.jsx
 │   ├── MovieModal.jsx
 │   ├── Toast.jsx
-├── pages/            # 각 페이지 컴포넌트
+│   └── WishlistCard.jsx
+├── 📂 hooks               # 사용자 정의 Hook
+│   ├── useFetchMovies.js
+│   ├── useLocalStorage.js
+│   └── useWishlist.ts
+├── 📂 pages               # 주요 페이지
 │   ├── Home.jsx
+│   ├── MovieDetails.jsx
+│   ├── Popular.jsx
 │   ├── Search.jsx
 │   ├── SignIn.jsx
-│   ├── Popular.jsx
-├── services/         # API 호출 로직
-│   ├── URL.ts
-├── styles/           # 스타일 파일
+│   └── Wishlist.jsx
+├── 📂 services            # API 호출 및 유틸리티
+│   ├── URL.ts             # TMDB API 호출 함수
+├── 📂 styles              # 스타일링 파일
+│   ├── global.css
 │   ├── Home.css
-│   ├── Search.css
 │   ├── SignIn.css
-│   ├── Popular.css
-├── terms/            # 약관 텍스트 파일
-│   ├── terms.md
-└── App.js            # 라우팅 관리
+│   └── Toast.css
+└── 📂 terms               # 약관 파일
+    └── terms.md
 ```
 
 ---
 
-### 주요 컴포넌트 설명
+## 🧑‍💻 개발 가이드
 
-#### `Home.jsx`
-- 랜덤 인기 영화 배너와 장르별 영화를 슬라이더 형식으로 출력합니다.
-- 무한 스크롤링으로 영화 데이터를 계속 불러옵니다.
+### 1️⃣ 코딩 컨벤션
 
-#### `Search.jsx`
-- 다양한 조건(키워드, 장르, 평점, 언어, 개봉연도)으로 영화 검색이 가능합니다.
-- 검색 결과는 무한 스크롤링으로 표시됩니다.
-- 영화 클릭 시 상세 정보를 모달로 확인할 수 있습니다.
+- 변수 및 함수명: 카멜케이스 (`camelCase`)
+- 컴포넌트명: 파스칼케이스 (`PascalCase`)
+- CSS 클래스명: 케밥케이스 (`kebab-case`)
+- 코드 포매팅: ESLint 및 Prettier 준수
 
-#### `SignIn.jsx`
-- 로그인 및 회원가입 기능을 제공합니다.
-- 개인 TMDB API 키를 회원가입 시 등록하며, Local Storage에 사용자 데이터를 저장합니다.
-- 약관 동의를 위한 모달과 Toast 메시지를 제공합니다.
+### 2️⃣ Git 커밋 메시지 규칙
 
-#### `MovieModal.jsx`
-- 영화의 상세 정보를 모달 형식으로 보여줍니다.
-- 찜하기 버튼 및 영화 정보 표시를 포함합니다.
+| 유형       | 설명                          | 예시                              |
+|------------|-------------------------------|-----------------------------------|
+| `feat`     | 새로운 기능 추가              | feat: 로그인 기능 추가           |
+| `fix`      | 버그 수정                    | fix: 영화 검색 필터 오류 수정     |
+| `docs`     | 문서 수정                    | docs: README.md 업데이트         |
+| `style`    | 스타일 수정 (UI, 포매팅 등)  | style: 로그인 버튼 정렬 수정      |
+| `refactor` | 코드 리팩토링                | refactor: 컴포넌트 로직 분리      |
+| `test`     | 테스트 추가/수정             | test: 영화 상세 모달 테스트 추가 |
 
----
+### 3️⃣ 브랜치 전략
 
-### API 정보
+- `main`: 배포 가능한 코드
+- `develop`: 개발 중인 코드
+- `feature/{기능명}`: 새로운 기능 추가 시 생성
+- PR(Pull Request)을 통해 `develop`으로 병합
 
-- **TMDB API**:
-  - 영화 검색, 인기 영화, 장르별 영화 등 데이터를 제공받습니다.
-  - API 키는 사용자별로 회원가입 시 입력해야 하며, 이후 사용자의 키로 API 호출이 이루어집니다.
+### 4️⃣ PR 템플릿 안내
 
----
+#### PR 제목
 
-### 로컬 데이터 저장 구조
+`[유형] 작업 내용 요약`
 
-1. `localStorage`:
-   - `users`: 사용자 정보(email, password, apiKey) 저장
-   - `loggedInUser`: 현재 로그인된 사용자 정보 저장
-   - `rememberMe`: 자동 로그인용 이메일 저장(선택적)
+#### 본문 템플릿
 
----
+```md
+## 작업 내용
+- 주요 작업 내용
 
-### 개발자 가이드
+## 테스트 방법
+- 테스트 방법 안내
 
-1. **회원가입**:
-   - API 키를 필수로 입력해야 회원가입이 가능합니다.
-   - 이메일 형식 및 비밀번호 일치 여부를 검사합니다.
-
-2. **로그인**:
-   - 입력된 정보와 Local Storage의 데이터를 비교하여 로그인 처리합니다.
-   - 로그인 성공 시 메인 페이지(`/`)로 이동합니다.
-
-3. **검색**:
-   - 여러 조건이 조합된 검색 결과를 실시간으로 확인할 수 있습니다.
-   - 검색 조건 변경 시 데이터가 초기화되고 새로운 결과를 불러옵니다.
+## 관련 이슈
+- #이슈번호
+```
 
 ---
 
-### 향후 개선 사항
-- 다국어 지원 추가
-- 영화 찜 목록 관리 페이지 구현
-- OAuth를 통한 간편 로그인 기능
+## 🐞 이슈 등록 방법
+
+1. 이슈 제목은 간결하게 작성 (`[유형] 이슈 제목`)
+2. 본문에 작업 내용을 구체적으로 기재
+3. 관련 커밋 및 PR 번호 연결
 
 ---
 
-### 프로젝트 협업
-- 기여를 환영합니다! Pull Request를 통해 제안해주세요. 😊
+## 📄 추가 문서 링크
+
+- [TMDB API 문서](https://www.themoviedb.org/documentation/api)
+- [React 공식 문서](https://reactjs.org/docs/getting-started.html)
+- [React Router DOM 공식 문서](https://reactrouter.com/en/main)
 
 ---
 
-### 라이선스
-- 본 프로젝트는 대학 과제를 위한 목적으로 작성되었습니다.
+## 📖 변경 이력
+
+| 버전       | 변경 내용                                         | 날짜       |
+|------------|--------------------------------------------------|------------|
+| `v1.0.0`   | 프로젝트 초기화 및 주요 기능 구현                | 2024-11-23 |
+
+---
+
+## 🔗 관련 프로젝트 링크
+
+- [TMDB API 공식 사이트](https://www.themoviedb.org/)
+- [React Toastify](https://fkhadra.github.io/react-toastify/introduction)
+
+---
+
+Happy Coding! 🚀
