@@ -1,0 +1,37 @@
+.wishlist-card {
+  background: #333;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wishlist-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.wishlist-poster {
+  width: 100%;
+  height: auto;
+}
+
+.wishlist-details {
+  padding: 10px;
+}
+
+.wishlist-details h3 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.remove-btn {
+  background: #444;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.remove-btn:hover {
+  background: #e50914;
+}
