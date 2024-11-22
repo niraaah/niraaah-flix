@@ -1,0 +1,71 @@
+.movie-slider {
+  margin: 40px 0;
+}
+
+.movie-slider h2 {
+  font-size: 1.8rem;
+  margin: 10px 20px;
+}
+
+.slider-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px; /* 카드 간 간격 */
+  padding: 10px 20px;
+  scroll-behavior: smooth; /* 부드러운 스크롤링 */
+}
+
+.slider-container::-webkit-scrollbar {
+  height: 8px; /* 스크롤바 높이 */
+}
+
+.slider-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5); /* 스크롤바 색상 */
+  border-radius: 4px;
+}
+
+.slider-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1); /* 스크롤 트랙 색상 */
+}
+
+.movie-card {
+  flex: 0 0 180px; /* 카드의 가로 크기 */
+  aspect-ratio: 2 / 3; /* 비율 유지 */
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.movie-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 비율 유지하며 이미지 채우기 */
+  display: block;
+}
+
+.movie-details {
+  padding: 10px;
+}
+
+.movie-details h3 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.wishlist-btn {
+  background: #e50914;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.wishlist-btn:hover {
+  background: #f40612;
+}
