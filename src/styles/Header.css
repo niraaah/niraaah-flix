@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(20, 20, 20, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-logo a {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.header-nav ul {
+  display: flex;
+  list-style: none;
+}
+
+.header-nav ul li {
+  margin: 0 10px;
+}
+
+.header-nav ul li a {
+  font-size: 1rem;
+  padding: 5px 10px;
+  transition: color 0.3s ease;
+}
+
+.header-nav ul li a:hover {
+  color: #e50914;
+}
+
+.header-user a {
+  padding: 5px 15px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.header-user a:hover {
+  background: #e50914;
+}
