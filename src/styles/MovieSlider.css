@@ -1,0 +1,41 @@
+.movie-slider {
+  margin: 40px 0;
+}
+
+.movie-slider h2 {
+  font-size: 1.8rem;
+  margin: 10px 20px;
+}
+
+.slider-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 20px;
+  scroll-behavior: smooth;
+}
+
+.slider-container::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-card {
+  flex: 0 0 200px; /* 카드 크기 */
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.movie-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
