@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import Popular from './pages/Popular';
 import Search from './pages/Search';
@@ -10,8 +10,7 @@ import Header from './components/Header';
 
 const App = () => {
   return (
-    <Router>
-      <Header />
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/popular" element={<Popular />} />
@@ -20,7 +19,7 @@ const App = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 };
 
