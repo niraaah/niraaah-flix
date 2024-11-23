@@ -11,6 +11,7 @@ import Header from './components/Header';
 const App = () => {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/popular" element={<Popular />} />
