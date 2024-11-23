@@ -10,22 +10,46 @@
   flex-wrap: wrap;
 }
 
-.filters input,
-.filters select,
-.filters button {
+.filters keyword-input{
+  width: 30rem;
+  height: 40px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #000;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: none;
+  transition: all 0.4s ease-in-out; /* 부드러운 애니메이션 */
+}
+
+.filters select{
   padding: 10px 15px;
   font-size: 1rem;
-  background-color: black;
+  background-color: rgb(50, 50, 90);
   color: white;
-  border: 1px solid white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filters reset-button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  background-color: rgb(50, 50, 50);
+  color: white;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .filters input:focus,
-.filters select:focus,
-.filters button:hover {
+.filters filter-select:focus,
+.filters reset-button:hover {
   background-color: white;
   color: black;
 }

@@ -6,6 +6,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import '../styles/Popular.css';
 
 const Popular = () => {
+  const apiKey = JSON.parse(localStorage.getItem('loggedInUser'))?.apiKey;
+
   const [popular, setPopular] = useState([]); // 영화 데이터
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [page, setPage] = useState(1); // 현재 페이지
@@ -13,14 +15,18 @@ const Popular = () => {
   const [selectedMovie, setSelectedMovie] = useState(null); // 선택된 영화
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [showButton, setShowButton] = useState(false); // 맨 위로 버튼 표시 상태
+  
 
   // API 호출 함수
   const fetchPopularMovies = async (currentPage) => {
+    if (!apiKey || loading) return;
+
+    setLoading(true);
+
     try {
-      setLoading(true);
-      const data = await TMDbAPI.getPopularMovies(currentPage);
-      setPopular((prevMovies) => [...prevMovies, ...data.results]); // 기존 데이터에 추가
-      setHasMore(data.page < data.total_pages); // 마지막 페이지 여부 확인
+      const data = await TMDbAPI.getPopularMovies(apiKey, currentPage);
+      setPopular((prevMovies) => [...prevMovies, ...data.results]);
+      setHasMore(data.page < data.total_pages);
     } catch (error) {
       console.error('Error fetching popular movies:', error);
     } finally {
@@ -31,7 +37,7 @@ const Popular = () => {
   // 초기 데이터 로드 및 페이지 번호 변경 시 호출
   useEffect(() => {
     fetchPopularMovies(page);
-  }, [page]);
+  }, [page, apiKey]);
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {

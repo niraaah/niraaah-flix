@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import TMDbAPI from '../services/URL.ts';
 import MovieCard from '../components/MovieCard';
@@ -6,6 +7,9 @@ import MovieModal from '../components/MovieModal';
 import '../styles/Search.css';
 
 const Search = () => {
+  const navigate = useNavigate();
+  const apiKey = JSON.parse(localStorage.getItem('loggedInUser'))?.apiKey;
+  
   const [query, setQuery] = useState('');
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState('');
@@ -22,9 +26,17 @@ const Search = () => {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
+    if (!apiKey) {
+      navigate('/signin');
+    }
+  }, [apiKey, navigate]);
+
+  useEffect(() => {
     const fetchGenres = async () => {
+      if (!apiKey) return;
+
       try {
-        const genreData = await TMDbAPI.getGenres();
+        const genreData = await TMDbAPI.getGenres(apiKey);
         setGenres(genreData.genres);
       } catch (error) {
         console.error('Error fetching genres:', error);
@@ -32,17 +44,17 @@ const Search = () => {
     };
 
     fetchGenres();
-  }, []);
+  }, [apiKey]);
 
   const fetchMovies = async (reset = false) => {
-    if (loading) return;
+    if (!apiKey || loading) return;
 
     setLoading(true);
 
     try {
       let url;
       const queryParams = [
-        `api_key=${process.env.REACT_APP_TMDB_API_KEY}`,
+        `api_key=${apiKey}`,
         `language=ko-KR`,
         `page=${page}`,
       ];
@@ -54,28 +66,13 @@ const Search = () => {
         url = `https://api.themoviedb.org/3/discover/movie`;
         if (selectedGenre) queryParams.push(`with_genres=${selectedGenre}`);
         if (selectedRating) queryParams.push(`vote_average.gte=${selectedRating}`);
-        if (selectedLanguage) queryParams.push(`with_original_language=${selectedLanguage}`);
         if (selectedYear) queryParams.push(`primary_release_year=${selectedYear}`);
-        if (selectedCertification) {
-          queryParams.push(`certification=${selectedCertification}`);
-          queryParams.push(`certification_country=US`); // 미국 기준 등급
-        }
+        if (selectedCertification) queryParams.push(`certification_country=US&certification=${selectedCertification}`);
+        if (selectedLanguage) queryParams.push(`with_original_language=${selectedLanguage}`);
       }
 
       const response = await axios.get(`${url}?${queryParams.join('&')}`);
       let results = response.data.results;
-
-      if (query && (selectedGenre || selectedRating || selectedLanguage)) {
-        results = results.filter((movie) => {
-          const matchesGenre =
-            !selectedGenre || movie.genre_ids.includes(parseInt(selectedGenre));
-          const matchesRating = !selectedRating || movie.vote_average >= selectedRating;
-          const matchesLanguage =
-            !selectedLanguage || movie.original_language === selectedLanguage;
-
-          return matchesGenre && matchesRating && matchesLanguage;
-        });
-      }
 
       if (reset) {
         setMovies(results);
@@ -160,12 +157,13 @@ const Search = () => {
     <div className="search">
       <h1>🧐 어떤 영화를 찾으시나요?</h1>
       <div className="filters">
-        <input
+        <keyword-input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="제목 또는 키워드 입력"
         />
+        <br />
         <select value={selectedGenre} onChange={(e) => setSelectedGenre(e.target.value)}>
           <option value="">장르 (전체)</option>
           {genres.map((genre) => (
@@ -210,13 +208,15 @@ const Search = () => {
           <option value="R">R - 17세 이상</option>
           <option value="NC-17">NC-17 - 18세 이상</option>
         </select>
-        <button type="button" onClick={handleReset}>
+        <reset-button type="button" onClick={handleReset}>
           초기화
-        </button>
+        </reset-button>
       </div>
 
       {loading && page === 1 ? (
         <p>로딩 중...</p>
+      ) : movies.length === 0 ? (
+        <p>검색 결과가 없습니다.</p>
       ) : (
         <div className="movie-grid">
           {movies.map((movie) => (
@@ -233,7 +233,7 @@ const Search = () => {
 
       {showButton && (
         <button className="scroll-to-top" onClick={scrollToTop}>
-          ↑ Top
+          ↑
         </button>
       )}
     </div>
