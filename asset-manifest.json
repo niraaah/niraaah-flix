@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/niraaah/niraaah-flix/static/css/main.f6e798f8.css",
+    "main.js": "/niraaah/niraaah-flix/static/js/main.1354a005.js",
+    "static/media/terms.md": "/niraaah/niraaah-flix/static/media/terms.1826e4419a5255bb21ed.md",
+    "index.html": "/niraaah/niraaah-flix/index.html",
+    "main.f6e798f8.css.map": "/niraaah/niraaah-flix/static/css/main.f6e798f8.css.map",
+    "main.1354a005.js.map": "/niraaah/niraaah-flix/static/js/main.1354a005.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f6e798f8.css",
+    "static/js/main.1354a005.js"
+  ]
+}
