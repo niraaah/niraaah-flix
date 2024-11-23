@@ -7,7 +7,7 @@ import termsText from '../terms/terms.md';
 import '../styles/TermsModal.css';
 
 const SignIn = () => {
-  const [isSignUp, setIsSignUp] = useState(false); // 로그인/회원가입 상태 관리
+  const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -27,16 +27,12 @@ const SignIn = () => {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [isClosing, setIsClosing] = useState(false); // 모달 닫힘 애니메이션 상태
   const [termsContent, setTermsContent] = useState('');
-
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
-  };
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (loggedInUser) navigate('/'); // 로그인 상태면 바로 홈 화면으로 이동
+  }, [navigate]);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,14 +60,42 @@ const SignIn = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      if (isSignUp) {
+        handleSignUp();
+      } else {
+        handleSignIn();
+      }
+    }
+  };
+
   const handleSignUp = () => {
     setErrors({});
-    if (!validateForm()) return;
+    const { email, password, confirmPassword, apiKey, agreeTerms } = formData;
+    const errors = {};
 
-    const { email, password, apiKey } = formData;
+    if (!validateEmail(email)) errors.email = '유효하지 않은 이메일 형식입니다.';
+    if (password !== confirmPassword) errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
+    if (!agreeTerms) errors.agreeTerms = '약관에 동의해야 합니다.';
+    if (!apiKey) errors.apiKey = 'API 키를 입력해야 합니다.';
+
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return;
+    }
+
     const users = JSON.parse(localStorage.getItem('users')) || [];
     if (users.some((user) => user.email === email)) {
-      setErrors((prevErrors) => ({ ...prevErrors, email: '이미 등록된 이메일입니다.' }));
+      setErrors({ email: '이미 등록된 이메일입니다.' });
       return;
     }
 
@@ -85,14 +109,18 @@ const SignIn = () => {
 
   const handleSignIn = () => {
     setErrors({});
-    if (!validateForm()) return;
-
     const { email, password, rememberMe } = formData;
+
+    if (!validateEmail(email)) {
+      setErrors({ email: '유효하지 않은 이메일 형식입니다.' });
+      return;
+    }
+
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find((user) => user.email === email && user.password === password);
+    const user = users.find((u) => u.email === email && u.password === password);
 
     if (!user) {
-      setErrors((prevErrors) => ({ ...prevErrors, password: '이메일 또는 비밀번호가 올바르지 않습니다.' }));
+      setErrors({ password: '이메일 또는 비밀번호가 올바르지 않습니다.' });
       return;
     }
 
@@ -109,6 +137,10 @@ const SignIn = () => {
     }, 2000);
   };
 
+  const handleCardSwitch = () => {
+    setIsSignUp((prev) => !prev);
+    setErrors({}); // 에러 초기화
+  };
   useEffect(() => {
     setErrors({});
   }, [isSignUp]);
@@ -139,8 +171,8 @@ const SignIn = () => {
         <div className={`card-container ${isSignUp ? 'sign-up' : 'sign-in'}`}>
           {/* 로그인 카드 */}
           <div className="card front">
-          <h2>환영합니다!</h2>
-          <br />
+            <h2>환영합니다!</h2>
+            <br />
             <p>본 서비스는 편리하고 효율적인 이용을 위해</p>
             <p>개인 TMDB API로 영화 데이터를 불러옵니다.</p>
             <br />
@@ -149,6 +181,7 @@ const SignIn = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               placeholder="이메일"
             />
             {errors.email && <div className="error">{errors.email}</div>}
@@ -157,6 +190,7 @@ const SignIn = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               placeholder="비밀번호"
             />
             {errors.password && <div className="error">{errors.password}</div>}
@@ -167,10 +201,11 @@ const SignIn = () => {
                 checked={formData.rememberMe}
                 onChange={handleChange}
               />
-              로그인 상태 유지
+              <span>로그인 상태 유지</span>
             </label>
             <button onClick={handleSignIn}>로그인</button>
-            <p onClick={() => setIsSignUp(true)}>계정이 없으신가요? 회원가입</p>
+            <br />
+            <span onClick={handleCardSwitch}>계정이 없으신가요? 회원가입</span>
           </div>
 
           {/* 회원가입 카드 */}
@@ -181,6 +216,7 @@ const SignIn = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               placeholder="이메일"
             />
             {errors.email && <div className="error">{errors.email}</div>}
@@ -189,17 +225,17 @@ const SignIn = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               placeholder="비밀번호"
             />
-            {errors.password && <div className="error">{errors.password}</div>}
             <input
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               placeholder="비밀번호 확인"
             />
-            {errors.confirmPassword && <div className="error">{errors.confirmPassword}</div>}
             <input
               type="text"
               name="apiKey"
@@ -207,7 +243,6 @@ const SignIn = () => {
               onChange={handleChange}
               placeholder="TMDB API 키"
             />
-            {errors.apiKey && <div className="error">{errors.apiKey}</div>}
             <label>
               <input
                 type="checkbox"
@@ -215,12 +250,13 @@ const SignIn = () => {
                 checked={formData.agreeTerms}
                 onChange={handleChange}
               />
-              약관에 동의합니다
+              <span>약관에 동의합니다</span>
             </label>
             {errors.agreeTerms && <div className="error">{errors.agreeTerms}</div>}
+            <term-button onClick={() => setShowTermsModal(true)}>이용약관 보기</term-button>
             <button onClick={handleSignUp}>회원가입</button>
-            <button onClick={() => setShowTermsModal(true)}>이용약관 보기</button>
-            <p onClick={() => setIsSignUp(false)}>이미 계정이 있으신가요? 로그인</p>
+            <br />
+            <span onClick={handleCardSwitch}>이미 계정이 있으신가요? 로그인</span>
           </div>
         </div>
       </div>
