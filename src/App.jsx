@@ -10,7 +10,7 @@ import Header from './components/Header';
 
 const App = () => {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter basename="/public">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
