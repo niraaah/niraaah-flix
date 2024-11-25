@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/niraaah-flix/static/css/main.4f036942.css",
-    "main.js": "/niraaah-flix/static/js/main.2aabd2cb.js",
+    "main.css": "/niraaah-flix/static/css/main.d5934630.css",
+    "main.js": "/niraaah-flix/static/js/main.57a75dcf.js",
     "static/media/terms.md": "/niraaah-flix/static/media/terms.1826e4419a5255bb21ed.md",
     "index.html": "/niraaah-flix/index.html",
-    "main.4f036942.css.map": "/niraaah-flix/static/css/main.4f036942.css.map",
-    "main.2aabd2cb.js.map": "/niraaah-flix/static/js/main.2aabd2cb.js.map"
+    "main.d5934630.css.map": "/niraaah-flix/static/css/main.d5934630.css.map",
+    "main.57a75dcf.js.map": "/niraaah-flix/static/js/main.57a75dcf.js.map"
   },
   "entrypoints": [
-    "static/css/main.4f036942.css",
-    "static/js/main.2aabd2cb.js"
+    "static/css/main.d5934630.css",
+    "static/js/main.57a75dcf.js"
   ]
 }
