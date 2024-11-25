@@ -157,7 +157,7 @@ const Search = () => {
     <div className="search">
       <h1>🧐 어떤 영화를 찾으시나요?</h1>
       <div className="filters">
-        <keyword-input
+        <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
