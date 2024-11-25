@@ -45,18 +45,19 @@ cd <프로젝트 폴더>
 npm install
 ```
 
-### 3️⃣ 환경 변수 설정
-
-`.env` 파일을 생성한 후, TMDB API 키를 추가합니다.
-```env
-REACT_APP_TMDB_API_KEY=당신의_TMDB_API_키
-```
-
-### 4️⃣ 프로젝트 실행
+### 3️⃣ 환로젝트 실행
 ```bash
 npm start
 ```
-앱은 기본적으로 `http://localhost:3000`에서 실행됩니다.
+앱은 기본적으로 `http://localhost:3000`에서 실행됩니다. 
+
+### 4️⃣ GitHub Pages 배포
+프로젝트를 GitHub Pages에 배포하려면, 다음 명령어를 사용하여 빌드한 후 배포합니다.
+```bash
+npm run build
+npm run deploy
+```
+배포 후, GitHub Pages에서 제공하는 URL을 통해 애플리케이션에 접근할 수 있습니다.
 
 ---
 
