@@ -18,23 +18,36 @@
 .header-nav ul {
   display: flex;
   list-style: none;
+  align-items: center; /* 세로 중앙 정렬 추가 */
+  margin: 0;
+  padding: 0;
 }
 
 .header-nav ul li {
+  display: flex; /* `a` 요소와 버튼의 세로 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
   margin: 0 10px;
 }
 
 .header-nav ul li a {
+  display: flex; /* 부모 요소에서 세로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
   font-size: 1rem;
-  padding: 5px 10px;
-  transition: color 0.3s ease;
+  color: white;
+  padding: 5px 15px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 4px;
+  white-space: nowrap; /* 글씨가 한 줄로 유지되도록 설정 */
+  transition: background 0.3s ease;
+  text-decoration: none; /* 밑줄 제거 */
 }
 
 .header-nav ul li a:hover {
   color: #e50914;
 }
 
-.header-user button{
+.header-nav button{
   color: #787878;
   background-color: #292929;
   border-radius: 50px;
@@ -42,20 +55,24 @@
   border-color: #e50914;
 }
 
-.header-user button:hover{
+.header-nav button:hover{
   color: #000;
   background-color: #e50914;
 }
 
-.header-user a {
-  padding: 5px 15px;
-  border: 1px solid #fff;
-  border-radius: 4px;
-  transition: background 0.3s ease;
+.header-nav ul li button {
+  display: flex; /* 부모 요소에서 세로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  color: #787878;
+  background-color: #292929;
+  border-radius: 50px;
+  margin: 10px;
+  border-color: #e50914;
 }
 
-.header-user a:hover {
-  background: #e50914;
+.header-nav ul li button:hover {
+  color: #000;
+  background-color: #e50914;
 }
 
 .logout-modal {
@@ -129,6 +146,7 @@
   animation: fadeIn 0.5s ease-in-out;
   z-index: 1000;
 }
+
 .logout-modal-content {
   background: white;
   color: #000;
@@ -185,7 +203,6 @@
     opacity: 1;
   }
 }
-/* 기존 스타일 유지 */
 
 /* 메뉴 아이콘 */
 .menu-icon {
@@ -195,18 +212,11 @@
   color: #fff;
 }
 
-/* 모바일 사이즈 */
+
+/* 작은 화면에서 메뉴 스타일 */
 @media (max-width: 768px) {
-  .modal-content h2{
-    margin-top: 30px;
-  }
-
-  .header-logo a {
-    font-size: 1.2rem;
-  }
-
   .menu-icon {
-    display: block; /* 모바일에서만 보이도록 */
+    display: block; /* 메뉴 아이콘 표시 */
   }
 
   .header-nav {
@@ -224,30 +234,53 @@
     display: flex; /* 활성화 시 표시 */
   }
 
-
-  .header-nav ul {
-    flex-direction: column; /* 세로 정렬 */
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
   .header-nav ul {
     flex-direction: column; /* 세로 배치 */
     gap: 10px;
   }
 
-  .header-nav ul li a {
+  .header-nav ul li {
     text-align: center;
-    font-size: 1.2rem;
+    margin: 10px 0;
   }
-  .header-user {
-    position: absolute;
-    top: 15px;
-    right: 20px;
+
+  .header-nav ul li a {
+    font-size: 1.2rem;
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+
+  .header-nav ul li button {
+    color: #787878;
+    background-color: #292929;
+    border-radius: 50px;
+    margin: 10px;
+    border-color: #e50914;
+  }
+
+  .header-nav ul li button:hover {
+    color: #000;
+    background-color: #e50914;
+  }
+
+  .logout-menu-button {
+    color: #787878;
+    background-color: #292929;
+    border-radius: 50px;
+    margin: 10px;
+    border-color: #e50914;
+  }
+
+  .logout-menu-button:hover {
+    color: #000;
+    background-color: #e50914;
   }
 }
-
 /* 위로가기 버튼 */
 .scroll-to-top {
   position: fixed;

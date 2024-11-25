@@ -34,15 +34,25 @@ const Header = () => {
           <li><Link to="/popular" onClick={() => setIsMenuOpen(false)}>대세 콘텐츠</Link></li>
           <li><Link to="/search" onClick={() => setIsMenuOpen(false)}>찾아보기</Link></li>
           <li><Link to="/wishlist" onClick={() => setIsMenuOpen(false)}>내가 찜한 리스트</Link></li>
+          {loggedInUser ? (
+            <li>
+              <button
+                className="logout-menu-button"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsModalOpen(true);
+                }}
+              >
+                로그아웃
+              </button>
+            </li>
+          ) : (
+            <li>
+              <Link to="/signin" onClick={() => setIsMenuOpen(false)}>로그인</Link>
+            </li>
+          )}
         </ul>
       </nav>
-      <div className="header-user">
-        {loggedInUser ? (
-          <button onClick={() => setIsModalOpen(true)}>로그아웃</button>
-        ) : (
-          <Link to="/signin">로그인</Link>
-        )}
-      </div>
 
       {/* 로그아웃 모달 */}
       {isModalOpen && (
