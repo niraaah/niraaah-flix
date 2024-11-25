@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/public/static/css/main.f6e798f8.css",
-    "main.js": "/public/static/js/main.233f2d72.js",
-    "static/media/terms.md": "/public/static/media/terms.1826e4419a5255bb21ed.md",
-    "index.html": "/public/index.html",
-    "main.f6e798f8.css.map": "/public/static/css/main.f6e798f8.css.map",
-    "main.233f2d72.js.map": "/public/static/js/main.233f2d72.js.map"
+    "main.css": "/niraaah-flix/static/css/main.4f036942.css",
+    "main.js": "/niraaah-flix/static/js/main.2aabd2cb.js",
+    "static/media/terms.md": "/niraaah-flix/static/media/terms.1826e4419a5255bb21ed.md",
+    "index.html": "/niraaah-flix/index.html",
+    "main.4f036942.css.map": "/niraaah-flix/static/css/main.4f036942.css.map",
+    "main.2aabd2cb.js.map": "/niraaah-flix/static/js/main.2aabd2cb.js.map"
   },
   "entrypoints": [
-    "static/css/main.f6e798f8.css",
-    "static/js/main.233f2d72.js"
+    "static/css/main.4f036942.css",
+    "static/js/main.2aabd2cb.js"
   ]
 }
