@@ -1,37 +1,75 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LocalStorageService from '../services/LocalStorageService';
 import '../styles/MovieModal.css';
 
 const MovieModal = ({ movie, onClose }) => {
+  const navigate = useNavigate();
   const { id, title, overview, release_date, vote_average, poster_path } = movie;
-  const [isWishlisted, setIsWishlisted] = useState(false); // 찜하기 상태 관리
+  const [isWishlisted, setIsWishlisted] = useState(false); // 찜 상태 관리
   const [detailedInfo, setDetailedInfo] = useState(null); // 영화 세부 정보 상태
+  const [apiKey, setApiKey] = useState(null); // 로그인된 사용자의 API 키
 
+  // 로그인 여부 확인
   useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko-KR`
-        );
-        setDetailedInfo(response.data);
-      } catch (error) {
-        console.error('Error fetching movie details:', error);
-      }
-    };
+    const storedApiKey = JSON.parse(localStorage.getItem('loggedInUser'))?.apiKey;
+    if (!storedApiKey) {
+      navigate('/signin'); // 로그인 화면으로 리다이렉트
+    } else {
+      setApiKey(storedApiKey); // API 키 설정
+    }
+  }, [navigate]);
 
-    fetchMovieDetails();
+  // 영화 세부 정보 가져오기
+  useEffect(() => {
+    if (apiKey) {
+      const fetchMovieDetails = async () => {
+        try {
+          const response = await axios.get(
+            `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=ko-KR`
+          );
+          setDetailedInfo(response.data);
+        } catch (error) {
+          console.error('Error fetching movie details:', error);
+        }
+      };
+
+      fetchMovieDetails();
+    }
+  }, [id, apiKey]);
+
+  // 초기 찜 상태 확인
+  useEffect(() => {
+    const wishlist = LocalStorageService.get('wishlist') || [];
+    setIsWishlisted(wishlist.some((item) => item.id === id));
   }, [id]);
 
+  // 찜 상태 토글
   const handleWishlist = () => {
-    // 찜 상태 토글
-    setIsWishlisted(!isWishlisted);
+    const wishlist = LocalStorageService.get('wishlist') || [];
 
-    // 찜하기 동작 추가 (API 호출 또는 상태 업데이트)
-    if (!isWishlisted) {
-      alert(`${title}을(를) 찜 목록에 추가했습니다!`);
-    } else {
+    if (isWishlisted) {
+      // 찜 해제
+      const updatedWishlist = wishlist.filter((item) => item.id !== id);
+      LocalStorageService.set('wishlist', updatedWishlist);
       alert(`${title}을(를) 찜 목록에서 제거했습니다!`);
+    } else {
+      // 찜 추가
+      const newMovieData = {
+        id,
+        title,
+        overview,
+        release_date,
+        vote_average,
+        poster_path,
+      };
+      wishlist.push(newMovieData);
+      LocalStorageService.set('wishlist', wishlist);
+      alert(`${title}을(를) 찜 목록에 추가했습니다!`);
     }
+
+    setIsWishlisted(!isWishlisted);
   };
 
   if (!detailedInfo) {

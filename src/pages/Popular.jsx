@@ -15,6 +15,7 @@ const Popular = () => {
   const [selectedMovie, setSelectedMovie] = useState(null); // 선택된 영화
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [showButton, setShowButton] = useState(false); // 맨 위로 버튼 표시 상태
+  const [wishlist, setWishlist] = useState([]);
   
 
   // API 호출 함수
@@ -84,14 +85,32 @@ const Popular = () => {
     setIsModalOpen(false);
   };
 
+  const handleWishlistToggle = (movie) => {
+    const isAlreadyWishlisted = wishlist.some((item) => item.id === movie.id);
+    if (isAlreadyWishlisted) {
+      setWishlist(wishlist.filter((item) => item.id !== movie.id));
+    } else {
+      setWishlist([...wishlist, movie]);
+    }
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  };
+
+  const isMovieWishlisted = (movieId) => {
+    return wishlist.some((item) => item.id === movieId);
+  };
+
   return (
     <div className="popular">
       <h1>🏆 지금 뜨는 컨텐츠</h1>
       <div className="movie-grid">
         {popular.map((movie) => (
-          <div key={movie.id} onClick={() => handleMovieClick(movie)}>
-            <MovieCard movie={movie} />
-          </div>
+          <MovieCard
+          key={movie.id}
+          movie={movie}
+          onClick={() => handleMovieClick(movie)}
+          onWishlistToggle={handleWishlistToggle}
+          isWishlisted={isMovieWishlisted(movie.id)}
+        />
         ))}
       </div>
       {loading && <LoadingSpinner />}

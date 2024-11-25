@@ -23,14 +23,12 @@
   flex: 0 0 200px; /* 카드 크기 */
   aspect-ratio: 2 / 3;
   border-radius: 8px;
-  overflow: hidden;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .movie-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .movie-poster {

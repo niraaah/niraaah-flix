@@ -63,7 +63,7 @@
 
 .movie-grid > div {
   width: 200px; /* 포스터 크기 고정 */
-  height: 300px;
+  height: 330px;
   overflow: hidden;
 }
 

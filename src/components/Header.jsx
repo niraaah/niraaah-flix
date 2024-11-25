@@ -7,6 +7,7 @@ const Header = () => {
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState({ message: '', type: '' });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -24,12 +25,15 @@ const Header = () => {
       <div className="header-logo">
         <Link to="/">🎬 Niraaah-flix</Link>
       </div>
-      <nav className="header-nav">
+      <div className="menu-icon" onClick={() => setIsMenuOpen((prev) => !prev)}>
+        ☰
+      </div>
+      <nav className={`header-nav ${isMenuOpen ? 'active' : ''}`}>
         <ul>
-          <li><Link to="/">홈</Link></li>
-          <li><Link to="/popular">대세 콘텐츠</Link></li>
-          <li><Link to="/search">찾아보기</Link></li>
-          <li><Link to="/wishlist">내가 찜한 리스트</Link></li>
+          <li><Link to="/" onClick={() => setIsMenuOpen(false)}>홈</Link></li>
+          <li><Link to="/popular" onClick={() => setIsMenuOpen(false)}>대세 콘텐츠</Link></li>
+          <li><Link to="/search" onClick={() => setIsMenuOpen(false)}>찾아보기</Link></li>
+          <li><Link to="/wishlist" onClick={() => setIsMenuOpen(false)}>내가 찜한 리스트</Link></li>
         </ul>
       </nav>
       <div className="header-user">

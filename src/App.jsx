@@ -8,11 +8,13 @@ import SignIn from './pages/SignIn';
 import MovieDetails from './pages/MovieDetails';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
+import ScrollToTop from './components/ScrollToTop'; // ScrollToTop imported
 
 const App = () => {
   return (
     <Router>
       <Header />
+      <ScrollToTop /> {/* ScrollToTop added here */}
       <Routes>
         <Route path="/signin" element={<SignIn />} />
         <Route

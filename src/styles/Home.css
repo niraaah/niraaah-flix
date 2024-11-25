@@ -9,8 +9,14 @@
 
 .movie-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px; /* 카드 간격 조정 */
+  justify-items: center; /* 포스터 중앙 정렬 */
+}
+
+.movie-grid > div {
+  padding: 20px; /* 각 포스터 주변 패딩 추가 */
+  box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
 }
 
 .end-message {
@@ -19,6 +25,7 @@
   font-size: 1rem;
   color: #aaa;
 }
+
 .banner {
   position: relative;
   height: 70vh; /* 배너 높이 */
@@ -62,6 +69,7 @@
 
 .banner-buttons {
   display: flex;
+  
   gap: 15px;
 }
 
@@ -71,7 +79,8 @@
   border: none;
   color: black;
   padding: 10px 20px;
-  border-radius: 5px;
+  width: 100px;
+  border-radius: 50px;
   font-size: 1rem;
   cursor: pointer;
   font-weight: bold;
@@ -86,7 +95,7 @@
 
 .details-button {
   background-color: rgba(109, 109, 110, 0.8);
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .movie-slider {
@@ -102,7 +111,7 @@
   display: flex;
   overflow-x: auto;
   gap: 10px;
-  padding: 10px 20px;
+  padding: 5px 20px;
 }
 
 .slider-container::-webkit-scrollbar {
