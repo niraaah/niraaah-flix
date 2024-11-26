@@ -15,7 +15,7 @@ const Wishlist = () => {
   const loadWishlist = useCallback(() => {
     setLoading(true);
     const storedWishlist = LocalStorageService.get('wishlist') || [];
-    setWishlist((prev) => [...prev, ...storedWishlist.slice((page - 1) * 10, page * 10)]); // 페이지에 따라 데이터 로드
+    setWishlist(storedWishlist.slice((page - 1) * 10, page * 10)); // prev 제거
     setLoading(false);
   }, [page]);
 
@@ -36,9 +36,10 @@ const Wishlist = () => {
 
   // 찜한 영화 목록에서 삭제
   const handleRemoveFromWishlist = (movie) => {
-    const updatedWishlist = wishlist.filter((item) => item.id !== movie.id);
+    const storedWishlist = LocalStorageService.get('wishlist') || [];
+    const updatedWishlist = storedWishlist.filter((item) => item.id !== movie.id);
     LocalStorageService.set('wishlist', updatedWishlist);
-    setWishlist(updatedWishlist);
+    setWishlist(updatedWishlist.slice(0, page * 10)); // 현재 페이지까지만 표시
   };
 
   // 영화 클릭 시 모달 열기

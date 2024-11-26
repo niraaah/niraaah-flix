@@ -2,17 +2,31 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 0%;
   padding: 15px 30px;
   background: rgba(20, 20, 20, 0.8);
   position: sticky;
   top: 0;
   z-index: 1000;
   white-space: nowrap; /* 글씨가 한 줄로 유지되도록 설정 */
+  transition: background 0.3s ease, opacity 0.5s ease, transform 0.5s ease; /* 배경과 투명도에 대한 전환 추가 */
 }
 
 .header-logo a {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.user-name {
+  color: rgb(255, 183, 0); /* 초록색 */
+  font-weight: bold; /* 굵은 글씨 */
+  font-size: 1.2em; /* 헤더 로고보다 조금 작은 크기 */
+  margin-left: 32px;
+  white-space: nowrap; /* 글씨가 한 줄로 유지되도록 설정 */
+}
+.user-name span {
+  color: white; /* 흰색 */
+  font-weight: normal; /* 일반 글씨 */
 }
 
 .header-nav ul {
@@ -280,6 +294,15 @@
     color: #000;
     background-color: #e50914;
   }
+
+  .header {
+    opacity: 1; /* 기본 투명도 */
+  }
+
+  /* 스크롤에 따라 투명도를 조절하는 클래스 */
+  .header.scrolled {
+    opacity: 0.8; /* 스크롤 시 투명도 변경 */
+  }
 }
 /* 위로가기 버튼 */
 .scroll-to-top {
@@ -309,4 +332,10 @@
 
 .scroll-to-top:hover {
   background: #f40612;
+}
+
+/* 스크롤에 따라 헤더의 투명도와 크기를 조절하는 애니메이션 */
+.header.scrolled {
+  opacity: 0.9; /* 스크롤 시 투명도 변경 */
+  transform: translateY(-100%); /* 스크롤 시 완전히 위로 이동 */
 }
