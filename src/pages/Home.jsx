@@ -30,6 +30,12 @@ const Home = () => {
   useEffect(() => {
     loadWishlist(); // 초기 로드 시 찜 목록 가져오기
   }, []);
+  
+  useEffect(() => {
+    if (!apiKey) {
+      navigate('/signin');
+    }
+  }, [apiKey, navigate]);
 
   useEffect(() => {
     if (apiKey) {
@@ -130,7 +136,11 @@ const Home = () => {
           </div>
         </div>
       )}
-      <MovieSlider title="지금 뜨는 콘텐츠" movies={popularMovies} onMovieClick={handleMovieClick} wishlist={wishlist} />
+      <MovieSlider 
+        title="지금 뜨는 콘텐츠" 
+        movies={popularMovies} 
+        onMovieClick={handleMovieClick} 
+        wishlist={wishlist} />
       {genreMovies.map(({ genreName, movies }) => (
         <MovieSlider
           key={genreName}
