@@ -5,7 +5,7 @@ const PrivateRoute = ({ children }) => {
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
   
   // 인증 상태 확인
-  const isAuthenticated = !!loggedInUser;
+  const isAuthenticated = Boolean(loggedInUser);
 
   return isAuthenticated ? children : <Navigate to="/signin" />;
 };

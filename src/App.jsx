@@ -18,7 +18,6 @@ const AppWrapper = () => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      // 이미 초기화되었다면 처리하지 않음
       if (isInitialized) return;
       
       try {
@@ -28,11 +27,9 @@ const AppWrapper = () => {
         const currentPath = window.location.pathname;
 
         if (loggedInUser) {
-          // 첫 진입시에만 홈으로 이동
           if (currentPath === '/signin') {
             navigate('/');
           }
-          // 새로고침시에는 현재 페이지 유지
         } else if (rememberedUser) {
           const users = JSON.parse(localStorage.getItem('users')) || [];
           const user = users.find((u) => u.email === rememberedUser.email);
@@ -52,7 +49,6 @@ const AppWrapper = () => {
             } else {
               localStorage.removeItem('rememberMe');
               navigate('/signin');
-    
             }
           } else {
             localStorage.removeItem('rememberMe');
@@ -131,7 +127,7 @@ const AppWrapper = () => {
 // 메인 App 컴포넌트
 const App = () => {
   return (
-    <Router>
+    <Router basename="/niraaah-flix">
       <AppWrapper />
     </Router>
   );
