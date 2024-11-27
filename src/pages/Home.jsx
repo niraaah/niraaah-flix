@@ -15,7 +15,6 @@ const Home = () => {
   const [wishlist, setWishlist] = useState([]); // 찜 목록
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [apiKey, setApiKey] = useState(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     return loggedInUser?.apiKey || null;
@@ -30,12 +29,6 @@ const Home = () => {
   useEffect(() => {
     loadWishlist(); // 초기 로드 시 찜 목록 가져오기
   }, []);
-  
-  useEffect(() => {
-    if (!apiKey) {
-      navigate('/signin');
-    }
-  }, [apiKey, navigate]);
 
   useEffect(() => {
     if (apiKey) {
@@ -60,7 +53,6 @@ const Home = () => {
   }, [apiKey]);
 
   const loadNextGenres = async (nextGenres) => {
-    setIsLoading(true); // 로딩 상태 활성화
     const newGenreMovies = [];
     for (const genre of nextGenres) {
       try {
@@ -72,30 +64,7 @@ const Home = () => {
     }
     setGenreMovies((prev) => [...prev, ...newGenreMovies]);
     setLoadedGenres((prev) => [...prev, ...nextGenres]);
-    setIsLoading(false); // 로딩 상태 비활성화
   };
-
-  // 무한 스크롤 이벤트 핸들러
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 200 &&
-      !isLoading
-    ) {
-      const remainingGenres = genres.filter(
-        (genre) => !loadedGenres.some((loaded) => loaded.id === genre.id)
-      );
-
-      if (remainingGenres.length > 0) {
-        loadNextGenres(remainingGenres.slice(0, 3)); // 3개의 장르 로드
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [genres, loadedGenres, isLoading]);
 
   const handleMovieClick = (movie) => {
     setSelectedMovie(movie);
@@ -107,6 +76,13 @@ const Home = () => {
     setIsModalOpen(false);
     loadWishlist(); // 모달 닫힐 때 찜 목록 다시 로드
   };
+
+  // 추가: Popular.jsx에서 사용된 '모달 닫을 때 MovieCard 리로드' 기능 적용
+  useEffect(() => {
+    if (!isModalOpen) {
+      loadWishlist();
+    }
+  }, [isModalOpen]);
 
   return (
     <div className="home">
@@ -122,25 +98,14 @@ const Home = () => {
               <h1>{bannerMovie.title}</h1>
               <p>{bannerMovie.overview}</p>
               <div className="banner-buttons">
-                <button className="play-button" onClick={() => alert('재생 기능은 아직 구현되지 않았습니다.')}>
-                  재생
-                </button>
-                <button
-                  className="details-button"
-                  onClick={() => handleMovieClick(bannerMovie)}
-                >
-                  상세 정보
-                </button>
+                <button className="play-button" onClick={() => alert('재생 기능은 아직 구현되지 않았습니다.')}>재생</button>
+                <button className="details-button" onClick={() => handleMovieClick(bannerMovie)}>상세 정보</button>
               </div>
             </div>
           </div>
         </div>
       )}
-      <MovieSlider 
-        title="지금 뜨는 콘텐츠" 
-        movies={popularMovies} 
-        onMovieClick={handleMovieClick} 
-        wishlist={wishlist} />
+      <MovieSlider title="지금 뜨는 콘텐츠" movies={popularMovies} onMovieClick={handleMovieClick} wishlist={wishlist} />
       {genreMovies.map(({ genreName, movies }) => (
         <MovieSlider
           key={genreName}
@@ -150,7 +115,6 @@ const Home = () => {
           wishlist={wishlist}
         />
       ))}
-      {isLoading && <p>로딩 중...</p>}
       {isModalOpen && selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
       )}
