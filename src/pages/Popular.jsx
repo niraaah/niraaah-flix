@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TMDbAPI from '../services/URL.ts';
 import MovieCard from '../components/MovieCard';
 import MovieModal from '../components/MovieModal'; // 모달 컴포넌트 추가
@@ -6,8 +7,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import '../styles/Popular.css';
 
 const Popular = () => {
-  const apiKey = JSON.parse(localStorage.getItem('loggedInUser'))?.apiKey;
-
+  const navigate = useNavigate();
   const [popular, setPopular] = useState([]); // 영화 데이터
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [page, setPage] = useState(1); // 현재 페이지
@@ -16,18 +16,27 @@ const Popular = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [showButton, setShowButton] = useState(false); // 맨 위로 버튼 표시 상태
   const [wishlist, setWishlist] = useState([]);
-  
+  const [apiKey, setApiKey] = useState(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    return loggedInUser?.apiKey || null;
+  });
+
   const loadWishlist = () => {
     const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
     setWishlist([...storedWishlist]); // 새로운 배열로 업데이트해 React가 감지
   };
 
-
   // 초기 찜 목록 로드
   useEffect(() => {
     loadWishlist();
   }, []);
-  
+
+  useEffect(() => {
+    if (!apiKey) {
+      navigate('/signin');
+    }
+  }, [apiKey, navigate]);
+
   // API 호출 함수
   const fetchPopularMovies = async (currentPage) => {
     if (!apiKey || loading) return;
@@ -50,6 +59,11 @@ const Popular = () => {
     fetchPopularMovies(page);
   }, [page, apiKey]);
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasMore, loading]);
+  
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
     if (
@@ -75,13 +89,7 @@ const Popular = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading, hasMore]);
 
-  // 맨 위로 스크롤
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
+
 
   // 영화 클릭 시 모달 열기
   const handleMovieClick = (movie) => {
@@ -106,7 +114,7 @@ const Popular = () => {
   const handleWishlistToggle = (movie) => {
     const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
     const isWishlisted = storedWishlist.some((item) => item.id === movie.id);
-  
+
     if (isWishlisted) {
       const updatedWishlist = storedWishlist.filter((item) => item.id !== movie.id);
       localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
@@ -114,12 +122,9 @@ const Popular = () => {
       storedWishlist.push(movie);
       localStorage.setItem('wishlist', JSON.stringify(storedWishlist));
     }
-    setWishlist([...storedWishlist]); // 찜 상태 변경 후 갱신
+    loadWishlist();
   };
   
-
-  
-
   useEffect(() => {
     if (!isModalOpen) {
       const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
@@ -127,17 +132,25 @@ const Popular = () => {
     }
   }, [isModalOpen]);  
 
+    // 맨 위로 스크롤
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <div className="popular">
       <h1>🏆 지금 뜨는 컨텐츠</h1>
       <div className="movie-grid">
         {popular.map((movie) => (
           <MovieCard
-          key={`${movie.id}-${wishlist.some((item) => item.id === movie.id)}`} // 상태 변화 강제 렌더링
-          movie={movie}
-          isWishlisted={wishlist.some((item) => item.id === movie.id)}
-          onWishlistToggle={handleWishlistToggle}
-          onClick={() => handleMovieClick(movie)}
+            key={`${movie.id}-${wishlist.some((item) => item.id === movie.id)}`}
+            movie={movie}
+            isWishlisted={wishlist.some((item) => item.id === movie.id)}
+            onWishlistToggle={handleWishlistToggle}
+            onClick={() => handleMovieClick(movie)}
           />
         ))}
       </div>

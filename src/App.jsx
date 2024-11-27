@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Popular from './pages/Popular';
 import Search from './pages/Search';
@@ -24,11 +24,11 @@ const AppWrapper = () => {
         await new Promise(resolve => setTimeout(resolve, 100));
         const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
         const rememberedUser = JSON.parse(localStorage.getItem('rememberMe'));
-        const currentPath = window.location.pathname;
+        const currentPath = window.location.hash; // pathname 대신 hash 사용
 
         if (loggedInUser) {
-          if (currentPath === '/signin') {
-            navigate('/');
+          if (currentPath === '#/signin') {
+            navigate('/home');
           }
         } else if (rememberedUser) {
           const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -43,8 +43,8 @@ const AppWrapper = () => {
                 apiKey: user.apiKey,
                 wishlist: user.wishlist || []
               }));
-              if (currentPath === '/signin') {
-                navigate('/');
+              if (currentPath === '#/signin') {
+                navigate('/home');
               }
             } else {
               localStorage.removeItem('rememberMe');
@@ -70,7 +70,7 @@ const AppWrapper = () => {
   }, [navigate, isInitialized]);
 
   if (isLoading) {
-    return <div>로딩중...</div>; // 또는 로딩 스피너 컴포넌트
+    return <div>로딩중...</div>;
   }
 
   return (
@@ -78,9 +78,10 @@ const AppWrapper = () => {
       <Header />
       <ScrollToTop />
       <Routes>
+        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/signin" element={<SignIn />} />
         <Route
-          path="/"
+          path="/home"
           element={
             <PrivateRoute>
               <Home />
@@ -127,7 +128,7 @@ const AppWrapper = () => {
 // 메인 App 컴포넌트
 const App = () => {
   return (
-    <Router basename="/niraaah-flix">
+    <Router>
       <AppWrapper />
     </Router>
   );

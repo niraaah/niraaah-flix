@@ -15,6 +15,7 @@ const Home = () => {
   const [wishlist, setWishlist] = useState([]); // 찜 목록
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태
   const [apiKey, setApiKey] = useState(() => {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     return loggedInUser?.apiKey || null;
@@ -53,6 +54,7 @@ const Home = () => {
   }, [apiKey]);
 
   const loadNextGenres = async (nextGenres) => {
+    setIsLoading(true); // 로딩 상태 활성화
     const newGenreMovies = [];
     for (const genre of nextGenres) {
       try {
@@ -64,7 +66,30 @@ const Home = () => {
     }
     setGenreMovies((prev) => [...prev, ...newGenreMovies]);
     setLoadedGenres((prev) => [...prev, ...nextGenres]);
+    setIsLoading(false); // 로딩 상태 비활성화
   };
+
+  // 무한 스크롤 이벤트 핸들러
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 200 &&
+      !isLoading
+    ) {
+      const remainingGenres = genres.filter(
+        (genre) => !loadedGenres.some((loaded) => loaded.id === genre.id)
+      );
+
+      if (remainingGenres.length > 0) {
+        loadNextGenres(remainingGenres.slice(0, 3)); // 3개의 장르 로드
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [genres, loadedGenres, isLoading]);
 
   const handleMovieClick = (movie) => {
     setSelectedMovie(movie);
@@ -115,6 +140,7 @@ const Home = () => {
           wishlist={wishlist}
         />
       ))}
+      {isLoading && <p>로딩 중...</p>}
       {isModalOpen && selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
       )}
